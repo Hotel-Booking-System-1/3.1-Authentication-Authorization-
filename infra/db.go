@@ -24,7 +24,7 @@ func ConnectDB() *gorm.DB {
 	if err := db.AutoMigrate(
 
 		models.User{},
-		
+		models.Room{},
 	); err != nil {
 		log.Fatal("❌ failed to migrate database:", err)
 	}
