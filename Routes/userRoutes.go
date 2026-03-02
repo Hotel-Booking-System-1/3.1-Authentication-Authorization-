@@ -15,7 +15,9 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 	userRepo := repository.RegisterUserRepo(db)
 	userService := service.RegisterUserService(userRepo)
 	userHandler := handlers.RegisterUserHandler(*userService)
-
+	roomRepo:=repository.RegisterRoomRepo(db)
+	roomService:=service.RegisterRoomService(roomRepo)
+    roomHandler:=handlers.RegisterROOMHandler(roomService)
 	api := r.Group("/api")
 	user := api.Group("/user")
 	{
@@ -38,4 +40,14 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 	{
 		auth.POST("/logout", userHandler.Logout)
 	}
+	Rooms:=r.Group("/rooms")
+	
+	{
+Rooms.POST("/create",roomHandler.CreateRoom)
+Rooms.GET("/list",roomHandler.GetRooms)
+Rooms.PATCH("/update/:id",roomHandler.UpdateRoom)
+Rooms.DELETE("/soft-deletion/:id",roomHandler.DeleteRoom)
+	}
+	
+
 }
