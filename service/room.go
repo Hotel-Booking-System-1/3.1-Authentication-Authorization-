@@ -1,13 +1,13 @@
 package service
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 	"math"
+
 	"github.com/mubarik-siraji/booking-system/dtos"
 	"github.com/mubarik-siraji/booking-system/models"
 	"github.com/mubarik-siraji/booking-system/repository"
-	
 )
 
 type RoomService interface {
@@ -38,15 +38,15 @@ func NewRoomService(repo repository.RoomRepository) RoomService {
 
 // CreateRoom maps the request to the model and persists it
 func (s *roomService) CreateRoom(req dtos.CreateRoomRequest) (*dtos.RoomResponse, error) {
-	if req.Status!="Available"{
+	if req.Status != "Available" {
 		return nil, fmt.Errorf("unavailable status: %s", req.Status)
 	}
-	if req.Status == "Maintenance"  {
-        return nil, fmt.Errorf("cannot create or book a room with status: %s", req.Status)
-    }
+	if req.Status == "Maintenance" {
+		return nil, fmt.Errorf("cannot create or book a room with status: %s", req.Status)
+	}
 	if req.Status == "Inactive" {
-        return nil, fmt.Errorf("cannot create or book a room with status: %s", req.Status)
-    }
+		return nil, fmt.Errorf("cannot create or book a room with status: %s", req.Status)
+	}
 
 	room := &models.Room{
 		RoomNumber:    req.RoomNumber,
@@ -66,8 +66,12 @@ func (s *roomService) CreateRoom(req dtos.CreateRoomRequest) (*dtos.RoomResponse
 // GetRooms handles pagination logic and total page calculation
 func (s *roomService) GetRooms(f dtos.RoomFilter) (*dtos.PaginatedRoomResponse, error) {
 	// Set defaults if not provided
-	if f.Page <= 0 { f.Page = 1 }
-	if f.Limit <= 0 { f.Limit = 10 }
+	if f.Page <= 0 {
+		f.Page = 1
+	}
+	if f.Limit <= 0 {
+		f.Limit = 10
+	}
 
 	rooms, total, err := s.repo.GetAll(f)
 	if err != nil {
