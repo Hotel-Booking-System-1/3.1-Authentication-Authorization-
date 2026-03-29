@@ -38,10 +38,10 @@ func (svc *UserService) CreateUser(data *dtos.CreateUserDto) (int, error) {
 
 	data.Password = string(hashBytes)
 	err = svc.repo.CreateUser(models.User{
-		Name: data.FullName,
+		Name:         data.FullName,
 		EmailAddress: email,
-		Password: data.Password,
-		Role: data.Role,	
+		Password:     data.Password,
+		Role:         data.Role,
 	})
 	if err != nil {
 		return http.StatusInternalServerError, errors.New("failed to create user")
@@ -73,7 +73,7 @@ func (svc *UserService) LoginUser(
 		false,
 	)
 	if err != nil {
-		return nil, http.StatusInternalServerError, errors.New(constant.DefualtErrorMsg)
+		return nil, http.StatusInternalServerError, errors.New(constant.DefaultErrorMsg)
 	}
 
 	refreshToken, err := helpers.GenerateJWT(
@@ -83,7 +83,7 @@ func (svc *UserService) LoginUser(
 		true,
 	)
 	if err != nil {
-		return nil, http.StatusInternalServerError, errors.New(constant.DefualtErrorMsg)
+		return nil, http.StatusInternalServerError, errors.New(constant.DefaultErrorMsg)
 	}
 
 	response := &dtos.LoginUserResponse{
